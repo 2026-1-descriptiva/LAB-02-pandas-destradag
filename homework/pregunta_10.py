@@ -4,8 +4,20 @@ datos requeridos se encuentran en los archivos `tbl0.tsv`, `tbl1.tsv` y
 `tbl2.tsv`. En este laboratorio solo puede utilizar las funciones y 
 librerias de pandas para resolver las preguntas.
 """
+import glob
+import os
+import pandas as pd
 
+def lsi(input_directory,filename):
+    
+    file = glob.glob(f"{input_directory}/*")
+    file_path = os.path.join(input_directory, filename)
+    dataframe =pd.read_csv(
+            file_path,
+            delimiter='\t',
+        )
 
+    return dataframe
 def pregunta_10():
     """
     Construya una tabla que contenga `c1` y una lista separada por ':' de los
@@ -20,3 +32,12 @@ def pregunta_10():
     D                   1:2:3:5:5:7
     E   1:1:2:3:3:4:5:5:5:6:7:8:8:9
     """
+    df = lsi("files/input","tbl0.tsv")
+    df.drop(columns=['c0','c3'], inplace=True)
+    df = df.groupby('c1')['c2'].apply(lambda x: ':'.join(map(str, sorted(x)))).sort_index()
+    df = df.to_frame()
+    return df
+
+if __name__ == '__main__':
+    print(pregunta_10())
+

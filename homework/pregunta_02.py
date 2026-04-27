@@ -8,7 +8,7 @@ librerias de pandas para resolver las preguntas.
 import glob
 import os
 import pandas as pd
- 
+
 def lsi(input_directory,filename):
     
     file = glob.glob(f"{input_directory}/*")

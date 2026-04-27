@@ -4,7 +4,19 @@ datos requeridos se encuentran en los archivos `tbl0.tsv`, `tbl1.tsv` y
 `tbl2.tsv`. En este laboratorio solo puede utilizar las funciones y 
 librerias de pandas para resolver las preguntas.
 """
+import glob
+import os
+import pandas as pd
 
+def lsi(input_directory,filename):
+    
+    file = glob.glob(f"{input_directory}/*")
+    file_path = os.path.join(input_directory, filename)
+    dataframe =pd.read_csv(
+            file_path,
+            delimiter='\t',
+        )
+    return dataframe
 
 def pregunta_12():
     """
@@ -22,3 +34,12 @@ def pregunta_12():
     38   38                    eee:0,fff:9,iii:2
     39   39                    ggg:3,hhh:8,jjj:5
     """
+    df = lsi("files/input","tbl2.tsv")
+    df['c5'] = df['c5a'].astype(str)+':'+df['c5b'].astype(str)
+    df = df.groupby('c0')['c5'].apply(lambda x: ','.join(map(str,sorted(x))))
+    df = df.to_frame()
+    df = df.reset_index()
+    return df
+
+if __name__ == '__main__':
+    print(pregunta_12())
